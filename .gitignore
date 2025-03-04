@@ -2,3 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
+data-raw/Blight_Violations_20250228.csv
+data-raw/Blight_Violations_20250228.zip
+# From Census shapefile
+data-raw/2020_Census_Tracts_shapefile/*
+2020_Census_Tracts_shapefile.zip
