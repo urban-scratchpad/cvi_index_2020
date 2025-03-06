@@ -67,12 +67,14 @@ dim(blight_points)
 #### Default is to use 3 year time window 
 #### "violation_date" is corresponding field to find this date in the original data.
 #### first, convert to date with the ymd_hms() function from lubridate library
-#### (this considers the format, "2005/02/01 00:00:00+00" in the dataset. 
+#### (this considers the format, 
+#### "2005/02/01 00:00:00+00" 
+#### in the dataset. 
 #### Then use the between() function from dplyr to filter to the time range.
 #### Note lubridate and dplyr were imported as part of the tidyverse library.
 
 blight_points <- blight_points |>
-  mutate(violation_date_ymd = ymd_hms(violation_date)) |>
+  dplyr::mutate(violation_date_ymd = ymd_hms(violation_date)) |>
   filter(between(violation_date_ymd, as.Date('2022-01-01'), as.Date('2024-12-31')))
 
 
