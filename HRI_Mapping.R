@@ -1,22 +1,21 @@
 # Install and load necessary packages
 install.packages("tidyverse")  # For data manipulation
 install.packages("sf")         # For handling spatial data
-install.packages("tmap")       # For mapping
+install.packages("mapview")
 
 library(tidyverse)
 library(sf)
-library(tmap)
 library(mapview)
 
 # Read the Historic Redlining Indicator data
-HRI_data <- read.csv("Historic_Redlining_Indicator_Detroit_2020.csv")
+HRI_data <- read.csv("data-raw/Historic_Redlining_Indicator_Detroit_2020.csv")
 head(HRI_data)
 
 # Load the Detroit boundary shapefile
-detroit_census_boundaries <- st_read("CensusTracts2020.shp")
+detroit_census_boundaries <- st_read("data-raw/CensusTracts2020.shp")
 
 # Load the Overall Detroit Boundary shapefile
-detroit_boundary <- st_read("City_of_Detroit_Boundary.shp")
+detroit_boundary <- st_read("data-raw/City_of_Detroit_Boundary.shp")
 
 # Inspect the shapefiles
 str(detroit_census_boundaries)
@@ -37,16 +36,6 @@ detroit_joined <- detroit_census_boundaries %>%
 
 # View the joined data
 head(detroit_joined)
-
-# Plot the joined data with the Overall Detroit Boundary overlaid using tmap
-tm_shape(detroit_joined) +
-  tm_polygons(col = "HRI2020", 
-              palette = "Blues", 
-              title = "Historic Redlining Indicator", 
-              colorNA = "white") +  # Set NA values to white
-  tm_shape(detroit_boundary) +  # Add the Detroit boundary layer
-  tm_borders(col = "red", lwd = 2) +  # Customize the boundary line
-  tm_layout(title = "Detroit Boundary with HRI Data", frame = FALSE)
 
 # View HRI values by census tracts using mapview
 # Define the color scale

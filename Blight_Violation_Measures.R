@@ -9,7 +9,7 @@ library(mapview) # use at end to view counts by census tract
 
 ## Load the Overall Detroit Boundary shapefile
 
-detroit_boundary <- st_read("City_of_Detroit_Boundary.shp")
+detroit_boundary <- st_read("data-raw/City_of_Detroit_Boundary.shp")
 
 ## Inspect the detroit boundary file
 str(detroit_boundary)
@@ -20,7 +20,7 @@ st_crs(detroit_boundary)
 #### IMPORT 2020 Census Tracts Shapefile ####
 
 
-tracts_2020 <- st_read("CensusTracts2020.shp")
+tracts_2020 <- st_read("data-raw/CensusTracts2020.shp")
 
 # View the file. Note the coordinate reference system (CRS), which will be referenced later.
 # This will be next to the labels "Geodetic CRS" or "Projected CRS" 
@@ -41,7 +41,7 @@ plot(st_geometry(tracts_2020))
 ## Another option for importing would be to skip the columns that are not needed.
 ## Note: reading in zip file to keep file sizes smaller
 
-blight_points <- read_csv("Blight_Violations_20250228.zip", 
+blight_points <- read_csv("data-raw/Blight_Violations_20250228.zip", 
                           col_types = cols(ticket_id = col_character(), 
                                            violation_street_number = col_character(), 
                                            violation_zip_code = col_character(), 
