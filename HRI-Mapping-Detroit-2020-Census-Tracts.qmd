@@ -46,7 +46,7 @@ detroit_boundary <- st_read("data-raw/City_of_Detroit_Boundary.shp", quiet = TRU
 detroit_joined <- detroit_tracts %>%
   left_join(HRI_data, by = "GEOID")
 ```
-## Interactive Visualization
+## Interactive Map
 ```{r}
 #| fig-height: 8
 red_palette <- colorRampPalette(c("#2166ac", "#b2182b"))
