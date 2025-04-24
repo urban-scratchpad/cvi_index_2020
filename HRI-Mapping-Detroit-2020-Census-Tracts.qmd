@@ -1,0 +1,132 @@
+---
+title: "HRI-Mapping-Detroit_2020-Census_Tracts"
+author: "Hamas Khanzada"
+execute:
+  echo: false
+format: html
+---
+
+```{css}
+/* Custom styles */
+.hidden-content { display: none; }
+.visible-content { display: block; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+}
+
+h2 {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.3em;
+}
+```
+
+```{r setup, include=FALSE}
+#| message: false
+library(tidyverse)
+library(sf)
+library(mapview)
+library(leafem)
+library(knitr)
+library(kableExtra)
+mapviewOptions(fgb = FALSE, viewer.suppress = FALSE)
+```
+
+```{r}
+# Load and process data
+HRI_data <- read.csv("data-raw/Historic_Redlining_Indicator_Detroit_2020.csv") %>%
+  mutate(GEOID = as.character(GEOID))
+
+detroit_tracts <- st_read("data-raw/CensusTracts2020.shp", quiet = TRUE)
+detroit_boundary <- st_read("data-raw/City_of_Detroit_Boundary.shp", quiet = TRUE)
+
+# Create joined dataset
+detroit_joined <- detroit_tracts %>%
+  left_join(HRI_data, by = "GEOID")
+```
+## Interactive Visualization
+```{r}
+#| fig-height: 8
+red_palette <- colorRampPalette(c("#2166ac", "#b2182b"))
+
+mapview(detroit_joined,
+        zcol = "HRI2020",
+        layer.name = "Redlining Impact<br>(Higher = Worse)",
+        col.regions = red_palette,
+        at = seq(1, 4, by = 0.5),
+        alpha.regions = 0.7,
+        lwd = 0.5,
+        color = "white",
+        label = paste("Tract:", detroit_joined$GEOID, "<br>Score:", detroit_joined$HRI2020)) + 
+  mapview(detroit_boundary,
+          color = "black",
+          lwd = 2,
+          alpha.regions = 0)
+```
+## Background
+
+What is Redlining?
+
+Redlining was a discriminatory practice begun in the 1930s where banks and federal agencies denied mortgages to residents in predominantly Black neighborhoods, marking them as "hazardous" on maps with red lines.
+
+## Key Impacts
+
+- Created persistent racial wealth gaps  
+- Limited housing in minority communities  
+- Shaped neighborhood disparities
+
+## About This Data
+
+The Historic Redlining Indicator (HRI) combines historical redlining patterns with contemporary socioeconomic data:    
+```{r data-sources, echo=FALSE}
+data_sources <- tibble(
+  `Data Element` = c("HRI 2020 Scores", "Census Tract Boundaries", "City Boundary"),
+  Description = c("Composite measure of historic redlining impact (1-4 scale)", 
+                 "2020 Census tract geometries with GEOID matching",
+                 "Official Detroit city limits"),
+  Source = c(
+    '<a href="https://www.openicpsr.org/openicpsr/project/141121/version/V3/view">OpenICPSR Project 141121</a>',
+    '<a href="https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html">US Census Bureau</a>',
+    '<a href="https://data.detroitmi.gov/">City of Detroit Open Data</a>'
+  )
+)
+
+data_sources %>%
+  kable(format = "html", escape = FALSE) %>%  # Ensure escape = FALSE
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE,
+                font_size = 14) %>%
+  column_spec(2, width = "25em") %>%
+  footnote(general = "HRI scores combine 1930s HOLC grades with contemporary socioeconomic data",
+           general_title = "Note:")
+```
+## Interpretation Guide
+Understanding the Scores in Dataset:
+
+A numerical value was assigned to each HOLC risk category as follows: 1 for “Least Impact”, 2 for “Moderate Impact”, 3 for “High Impact”, and 4 for “Severe Impact”. A historic redlining score was calculated from the summed proportion of HOLC residential security grades multiplied by a weighting factor based on area within each census tract. A higher score means greater redlining of the census tract.
+
+```{r echo=FALSE}
+tibble(Score = 1:4,
+       Meaning = c("Least impact", "Moderate impact", "High impact", "Severe impact"),
+       Color = c("#2166ac", "#67a9cf", "#ef8a62", "#b2182b")) %>%
+  mutate(Color = cell_spec("", background = Color)) %>%  # Convert hex codes to color blocks
+  kable(format = "html", escape = FALSE, align = "c") %>%
+  kable_styling(full_width = FALSE, font_size = 14) %>%
+  column_spec(3, width = "3em")  # Adjust width for color blocks
+```
+## Methodology
+Data Processing Steps
+
+1. Cleaned original HRI 2020 Census Tracts file by extracting census tracts only for Detroit by matching GeoIDs
+
+2. Joined 2020 census tracts with HRI scores
+
+2. Normalized all geographic data to NAD83 (EPSG:4269)
+
+3. Visualized using Mapview
+```{r}
+#| classes: .small-code
+glimpse(detroit_joined)
+```
