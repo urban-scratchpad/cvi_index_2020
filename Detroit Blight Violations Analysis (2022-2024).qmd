@@ -1,0 +1,194 @@
+---
+title: "Detroit Blight Violations Analysis (2022-2024)"
+author: "Hamas Khanzada"
+execute:
+  echo: false
+format: html
+---
+
+```{css}
+/* Custom styling for tables and maps */
+.hidden-content { display: none; }
+.visible-content { display: block; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+}
+
+.map-container {
+  height: 600px;
+  margin-bottom: 2em;
+}
+
+h2 {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.3em;
+}
+```
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(sf)
+library(mapview)
+library(lubridate)
+library(viridisLite)
+library(kableExtra)
+
+# Set mapview options
+mapviewOptions(fgb = FALSE, viewer.suppress = FALSE)
+```
+
+```{r, include=FALSE}
+## Data Prepration
+## Load Spatial Boundaries
+#| message: false
+#| warning: false
+
+# Detroit city boundary
+detroit_boundary <- st_read("data-raw/City_of_Detroit_Boundary.shp", quiet = TRUE) |>
+  st_transform(4326)
+
+# 2020 Census tracts
+tracts_2020 <- st_read("data-raw/CensusTracts2020.shp", quiet = TRUE) |>
+  st_transform(4326)  # Convert to WGS84 (lat/lon)
+
+## Process Blight Violation Data
+## Load and filter blight violations
+blight_points <- read_csv("data-raw/Blight_Violations_20250228.zip",
+                         col_types = cols(
+                           ticket_id = col_character(),
+                           violation_street_number = col_character(),
+                           violation_zip_code = col_character(),
+                           longitude = col_double(),
+                           latitude = col_double(),
+                           violation_date = col_character()
+                         )) |>
+  filter(!is.na(latitude) & !is.na(longitude)) |>
+  mutate(violation_date = ymd_hms(violation_date)) |>
+  filter(between(violation_date, as.Date('2022-01-01'), as.Date('2024-12-31')))
+
+# Convert to spatial object
+blight_points_sf <- st_as_sf(blight_points, 
+                            coords = c("longitude", "latitude"),
+                            crs = 4326)
+
+## Spatial Analysis
+## Count Violations Per Census Tract
+# Spatial join and count
+tract_counts <- tracts_2020 |>
+  st_join(blight_points_sf) |>
+  as_tibble() |>
+  count(GEOID, name = "violation_count")
+
+# Calculate area metrics
+tract_blight <- tracts_2020 |>
+  mutate(area_sq_mi = as.numeric(st_area(geometry)) / 27878400) |>
+  left_join(tract_counts, by = "GEOID") |>
+  mutate(
+    violation_count = replace_na(violation_count, 0),
+    violations_per_sq_mi = violation_count / area_sq_mi
+  )
+```
+## Interactive Map
+```{r}
+#| warning: false
+#| fig-height: 8
+
+mapview(tract_blight, 
+        zcol = "violation_count",
+        layer.name = "Blight Violations (2022-2024)",
+        col.regions = viridis(100),
+        alpha.regions = 0.7,
+        label = paste(
+          "Tract:", tract_blight$GEOID, "<br>",
+          "Total violations:", tract_blight$violation_count, "<br>",
+          "Per sq mi:", round(tract_blight$violations_per_sq_mi, 1)
+        )) +
+  mapview(detroit_boundary, color = "red", lwd = 2)
+```
+
+## Background
+
+What Are Blight Violations?
+
+Blight violations are municipal citations for property conditions that violate local maintenance codes, including:
+
+- Structural deterioration
+- Overgrown vegetation
+- Accumulated trash/debris
+- Broken windows or graffiti
+
+In Detroit, these violations reflect both property neglect and systemic challenges in neighborhood maintenance.
+
+## Key Impacts
+
+High blight violation density correlates with:
+
+- ↓ Property values (15-30% reduction in affected areas)
+- ↑ Crime rates (Broken Windows Theory effect)
+- Public health risks (pest infestations, mold exposure)
+- Municipal costs ($50M+ annually for enforcement/cleanup)
+
+## About This Data:
+
+```{r blight-data-sources, echo=FALSE}
+library(kableExtra)  # Ensure this is loaded
+
+data_sources <- tibble(
+  `Data Element` = c("Blight Violations", "Census Tract Boundaries", "Detroit Boundary"),
+  Description = c("Dataset containing measures for blight violations",
+                 "2020 Census geometries for spatial analysis",
+                 "Official city limits for mapping context"),
+    Source = c(
+    '<a href="https://data.detroitmi.gov/datasets/detroitmi::blight-violations/about">Blight Violations Dataset</a>',
+    '<a href="">US Census Bureau</a>', 
+    '<a href="https://data.detroitmi.gov/datasets/detroitmi::city-of-detroit-boundary/about">Detroit Boundary Dataset</a>'
+  )
+)
+
+data_sources %>%
+  kable(format = "html", escape = FALSE) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    full_width = FALSE,
+    font_size = 14
+  ) %>%
+  column_spec(2, width = "25em") %>%
+  footnote(
+    general = "Violation data filtered to 2022-2024 period with valid coordinates",
+    general_title = "Note:"
+  )
+```
+
+```{r}
+## Summary Statistics
+#| echo: false
+
+tibble(
+  Metric = c("Total Violations", "Average per Tract", "Max in Single Tract"),
+  Value = c(
+    sum(tract_blight$violation_count),
+    mean(tract_blight$violation_count) |> round(1),
+    max(tract_blight$violation_count)
+  )
+) |>
+  kable(format = "html") |>
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+## Methodology
+
+1. Data Processing:
+- Filtered violations to last three calendar years (2022-2024)
+- Removed records missing location data
+- Standardized all spatial data to WGS84 (EPSG:4326)
+
+2. Spatial Analysis:
+- Counted violations within each census tract using spatial join
+- Calculated violation density per square mile
+
+3. Visualization:
+- Choropleth map shows raw counts
+- Hover labels display density metrics
+- Detroit boundary provides spatial context
