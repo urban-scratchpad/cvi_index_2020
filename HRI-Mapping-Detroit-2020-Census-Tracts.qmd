@@ -87,9 +87,9 @@ data_sources <- tibble(
                  "2020 Census tract geometries with GEOID matching",
                  "Official Detroit city limits"),
   Source = c(
-    '<a href="https://www.openicpsr.org/openicpsr/project/141121/version/V3/view">OpenICPSR Project 141121</a>',
+    '<a href="https://www.openicpsr.org/openicpsr/project/141121/version/V3/view">HRI Dataset</a>',
     '<a href="https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html">US Census Bureau</a>',
-    '<a href="https://data.detroitmi.gov/">City of Detroit Open Data</a>'
+    '<a href="https://data.detroitmi.gov/datasets/detroitmi::city-of-detroit-boundary/about">Detroit Boundary Dataset</a>'
   )
 )
 
