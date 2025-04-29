@@ -1,0 +1,79 @@
+[
+  {
+    "objectID": "HRI-Mapping-Detroit-2020-Census-Tracts.html#interactive-map",
+    "href": "HRI-Mapping-Detroit-2020-Census-Tracts.html#interactive-map",
+    "title": "HRI-Mapping-Detroit_2020-Census_Tracts",
+    "section": "Interactive Map",
+    "text": "Interactive Map"
+  },
+  {
+    "objectID": "HRI-Mapping-Detroit-2020-Census-Tracts.html#background",
+    "href": "HRI-Mapping-Detroit-2020-Census-Tracts.html#background",
+    "title": "HRI-Mapping-Detroit_2020-Census_Tracts",
+    "section": "Background",
+    "text": "Background\nWhat is Redlining?\nRedlining was a discriminatory practice begun in the 1930s where banks and federal agencies denied mortgages to residents in predominantly Black neighborhoods, marking them as “hazardous” on maps with red lines."
+  },
+  {
+    "objectID": "HRI-Mapping-Detroit-2020-Census-Tracts.html#key-impacts",
+    "href": "HRI-Mapping-Detroit-2020-Census-Tracts.html#key-impacts",
+    "title": "HRI-Mapping-Detroit_2020-Census_Tracts",
+    "section": "Key Impacts",
+    "text": "Key Impacts\n\nCreated persistent racial wealth gaps\n\nLimited housing in minority communities\n\nShaped neighborhood disparities"
+  },
+  {
+    "objectID": "HRI-Mapping-Detroit-2020-Census-Tracts.html#about-this-data",
+    "href": "HRI-Mapping-Detroit-2020-Census-Tracts.html#about-this-data",
+    "title": "HRI-Mapping-Detroit_2020-Census_Tracts",
+    "section": "About This Data",
+    "text": "About This Data\nThe Historic Redlining Indicator (HRI) combines historical redlining patterns with contemporary socioeconomic data:\n\n\n\n\n\nData Element\nDescription\nSource\n\n\n\n\nHRI 2020 Scores\nComposite measure of historic redlining impact (1-4 scale)\nHRI Dataset\n\n\nCensus Tract Boundaries\n2020 Census tract geometries with GEOID matching\nUS Census Bureau\n\n\nCity Boundary\nOfficial Detroit city limits\nDetroit Boundary Dataset\n\n\n\nNote:\n\n\n\n\n HRI scores combine 1930s HOLC grades with contemporary socioeconomic data"
+  },
+  {
+    "objectID": "HRI-Mapping-Detroit-2020-Census-Tracts.html#interpretation-guide",
+    "href": "HRI-Mapping-Detroit-2020-Census-Tracts.html#interpretation-guide",
+    "title": "HRI-Mapping-Detroit_2020-Census_Tracts",
+    "section": "Interpretation Guide",
+    "text": "Interpretation Guide\nUnderstanding the Scores in Dataset:\nA numerical value was assigned to each HOLC risk category as follows: 1 for “Least Impact”, 2 for “Moderate Impact”, 3 for “High Impact”, and 4 for “Severe Impact”. A historic redlining score was calculated from the summed proportion of HOLC residential security grades multiplied by a weighting factor based on area within each census tract. A higher score means greater redlining of the census tract.\n\n\n\n\n\nScore\nMeaning\nColor\n\n\n\n\n1\nLeast impact\n\n\n\n2\nModerate impact\n\n\n\n3\nHigh impact\n\n\n\n4\nSevere impact"
+  },
+  {
+    "objectID": "HRI-Mapping-Detroit-2020-Census-Tracts.html#methodology",
+    "href": "HRI-Mapping-Detroit-2020-Census-Tracts.html#methodology",
+    "title": "HRI-Mapping-Detroit_2020-Census_Tracts",
+    "section": "Methodology",
+    "text": "Methodology\nData Processing Steps\n\nCleaned original HRI 2020 Census Tracts file by extracting census tracts only for Detroit by matching GeoIDs\nJoined 2020 census tracts with HRI scores\nNormalized all geographic data to NAD83 (EPSG:4269)\nVisualized using Mapview\n\n\n\nRows: 280\nColumns: 17\n$ STATEFP      &lt;chr&gt; \"26\", \"26\", \"26\", \"26\", \"26\", \"26\", \"26\", \"26\", \"26\", \"26…\n$ COUNTYFP     &lt;chr&gt; \"163\", \"163\", \"163\", \"163\", \"163\", \"163\", \"163\", \"163\", \"…\n$ TRACTCE      &lt;chr&gt; \"517300\", \"518900\", \"513700\", \"505400\", \"511300\", \"508100…\n$ GEOID        &lt;chr&gt; \"26163517300\", \"26163518900\", \"26163513700\", \"26163505400…\n$ NAME         &lt;chr&gt; \"5173\", \"5189\", \"5137\", \"5054\", \"5113\", \"5081\", \"5142\", \"…\n$ NAMELSAD     &lt;chr&gt; \"Census Tract 5173\", \"Census Tract 5189\", \"Census Tract 5…\n$ MTFCC        &lt;chr&gt; \"G5020\", \"G5020\", \"G5020\", \"G5020\", \"G5020\", \"G5020\", \"G5…\n$ FUNCSTAT     &lt;chr&gt; \"S\", \"S\", \"S\", \"S\", \"S\", \"S\", \"S\", \"S\", \"S\", \"S\", \"S\", \"S…\n$ ALAND        &lt;dbl&gt; 839440, 1846190, 3237672, 1390236, 1513884, 1574320, 9822…\n$ AWATER       &lt;dbl&gt; 0, 0, 595580, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8…\n$ INTPTLAT     &lt;chr&gt; \"+42.3456895\", \"+42.3526051\", \"+42.3579800\", \"+42.4186463…\n$ INTPTLON     &lt;chr&gt; \"-083.0505419\", \"-083.0435163\", \"-082.9612866\", \"-082.993…\n$ City_Name    &lt;chr&gt; \"Detroit\", \"Detroit\", \"Detroit\", \"Detroit\", \"Detroit\", \"D…\n$ HRI2020      &lt;dbl&gt; 4.00, 4.00, 3.51, 2.48, 3.13, 3.01, 3.00, 3.00, 4.00, 3.0…\n$ CBSA2020     &lt;int&gt; 19820, 19820, 19820, 19820, 19820, 19820, 19820, 19820, 1…\n$ Interval2020 &lt;int&gt; 4, 4, 4, 2, 3, 3, 3, 3, 4, 3, 4, NA, NA, 3, 3, 4, 4, NA, …\n$ geometry     &lt;POLYGON [US_survey_foot]&gt; POLYGON ((13477204 311621.7..., POLY…"
+  },
+  {
+    "objectID": "Detroit Blight Violations Analysis (2022-2024).html#interactive-map",
+    "href": "Detroit Blight Violations Analysis (2022-2024).html#interactive-map",
+    "title": "Detroit Blight Violations Analysis (2022-2024)",
+    "section": "Interactive Map",
+    "text": "Interactive Map"
+  },
+  {
+    "objectID": "Detroit Blight Violations Analysis (2022-2024).html#background",
+    "href": "Detroit Blight Violations Analysis (2022-2024).html#background",
+    "title": "Detroit Blight Violations Analysis (2022-2024)",
+    "section": "Background",
+    "text": "Background\nWhat Are Blight Violations?\nBlight violations are municipal citations for property conditions that violate local maintenance codes, including:\n\nStructural deterioration\nOvergrown vegetation\nAccumulated trash/debris\nBroken windows or graffiti\n\nIn Detroit, these violations reflect both property neglect and systemic challenges in neighborhood maintenance."
+  },
+  {
+    "objectID": "Detroit Blight Violations Analysis (2022-2024).html#key-impacts",
+    "href": "Detroit Blight Violations Analysis (2022-2024).html#key-impacts",
+    "title": "Detroit Blight Violations Analysis (2022-2024)",
+    "section": "Key Impacts",
+    "text": "Key Impacts\nHigh blight violation density correlates with:\n\n↓ Property values (15-30% reduction in affected areas)\n↑ Crime rates (Broken Windows Theory effect)\nPublic health risks (pest infestations, mold exposure)\nMunicipal costs ($50M+ annually for enforcement/cleanup)"
+  },
+  {
+    "objectID": "Detroit Blight Violations Analysis (2022-2024).html#about-this-data",
+    "href": "Detroit Blight Violations Analysis (2022-2024).html#about-this-data",
+    "title": "Detroit Blight Violations Analysis (2022-2024)",
+    "section": "About This Data:",
+    "text": "About This Data:\n\n\n\n\n\nData Element\nDescription\nSource\n\n\n\n\nBlight Violations\nDataset containing measures for blight violations\nBlight Violations Dataset\n\n\nCensus Tract Boundaries\n2020 Census geometries for spatial analysis\nUS Census Bureau\n\n\nDetroit Boundary\nOfficial city limits for mapping context\nDetroit Boundary Dataset\n\n\n\nNote:\n\n\n\n\n Violation data filtered to 2022-2024 period with valid coordinates\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMetric\nValue\n\n\n\n\nTotal Violations\n112467.0\n\n\nAverage per Tract\n401.7\n\n\nMax in Single Tract\n1270.0"
+  },
+  {
+    "objectID": "Detroit Blight Violations Analysis (2022-2024).html#methodology",
+    "href": "Detroit Blight Violations Analysis (2022-2024).html#methodology",
+    "title": "Detroit Blight Violations Analysis (2022-2024)",
+    "section": "Methodology",
+    "text": "Methodology\n\nData Processing:\n\n\nFiltered violations to last three calendar years (2022-2024)\nRemoved records missing location data\nStandardized all spatial data to WGS84 (EPSG:4326)\n\n\nSpatial Analysis:\n\n\nCounted violations within each census tract using spatial join\nCalculated violation density per square mile\n\n\nVisualization:\n\n\nChoropleth map shows raw counts\nHover labels display density metrics\nDetroit boundary provides spatial context"
+  }
+]
