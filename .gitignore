@@ -10,3 +10,5 @@ data-raw/2020_Census_Tracts_shapefile/*
 data-raw/Improve_Detroit_Issues.csv
 HRI-Mapping-Detroit-2020-Census-Tracts_files
 Detroit Blight Violations Analysis (2022-2024)_files/
+
+/.quarto/
